@@ -43,8 +43,8 @@ for i, opt in enumerate(opts):
     init1 = tf.global_variables_initializer()
     with tf.Session() as sess:
         sess.run(init1)
-        network = cn.CoreNetwork(train_x, train_y, model_p)
-        loss = network.train(sess, epochs, opt, minibatch_size, opt_names[i])
+        network = cn.CoreNetwork( model_p)
+        loss = network.train(sess,train_x,train_y, epochs, opt, minibatch_size, opt_names[i])
         losses.append(loss)
     tf.reset_default_graph()
 
