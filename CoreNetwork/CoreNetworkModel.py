@@ -8,9 +8,8 @@ import os
 
 class CoreNetwork(object):
 
-    def __init__(self, X, Y, modelparameters):
-        self.X = X
-        self.Y = Y
+    def __init__(self,  modelparameters):
+
         self.modelparameters = modelparameters
         self.model = self._build_model()
 
@@ -52,7 +51,7 @@ class CoreNetwork(object):
         tf.summary.scalar("accuracy", accuracy_)
         return loss
 
-    def train(self, sess, steps, optimizer, minibatch_size=100,optimizer_name="SGD"):
+    def train(self, sess,X, Y, steps, optimizer, minibatch_size=100,optimizer_name="SGD"):
         X_ = self.model.inputs[0]
         Y_ = self.model.outputs[0]
         #_predictions = self._transform()
@@ -76,17 +75,15 @@ class CoreNetwork(object):
         loss_val = []
         stepctr = 0
         for step in range(steps):
-            n_batch = self.X.shape[0] // minibatch_size + (self.X.shape[0] % minibatch_size != 0)
+            n_batch = X.shape[0] // minibatch_size + (X.shape[0] % minibatch_size != 0)
             for batch in range(n_batch):
                 if batch != (n_batch - 1):
-                    batch_X = self.X[batch:batch + minibatch_size - 1]
-                    batch_Y = self.Y[batch:batch + minibatch_size - 1]
+                    batch_X = X[batch:batch + minibatch_size - 1]
+                    batch_Y = Y[batch:batch + minibatch_size - 1]
                 else:
-                    batch_X = self.X[batch:]
-                    batch_Y = self.Y[batch:]
-                # batch_X = np.random.rand(10,784)
-                # batch_Y = np.random.rand(10,10)
-                #_,c,summary= sess.run([train_,loss_,summary_op], feed_dict={X_: batch_X, Y_: batch_Y})
+                    batch_X = X[batch:]
+                    batch_Y = Y[batch:]
+
                 _, c , summary = sess.run([train_, loss_,summary_op], feed_dict={X_: batch_X, Y_: batch_Y})
                 loss_val += c / n_batch
                 stepctr = stepctr + 1
