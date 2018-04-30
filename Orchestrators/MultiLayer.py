@@ -23,21 +23,21 @@ learning_rate = 0.01
 
 train_x,train_y, samplesize, features, num_classes = PrepareData()
 
-model_p = mp.ModelParameters(input_feature_count=features, layers=[], activations=[], outputclasses=num_classes)
+model_p = mp.ModelParameters(input_feature_count=features, layers=[20,5], activations=["relu", "relu"], outputclasses=num_classes)
 opts = [
     tf.train.GradientDescentOptimizer(learning_rate=learning_rate),
-    # asop.ASGradientDescentOptimizer(base_learning_rate=learning_rate),
-    # tf.train.RMSPropOptimizer(learning_rate=learning_rate),
-    # asop.ASRMSPropOptimizer(base_learning_rate=learning_rate),
-    # tf.train.AdamOptimizer(learning_rate=learning_rate),
-    # tf.train.MomentumOptimizer(learning_rate=learning_rate, momentum=.9),
-    # tf.train.MomentumOptimizer(learning_rate=learning_rate, momentum=.9, use_nesterov=True),
-    # tf.train.AdagradOptimizer(learning_rate=learning_rate)
+    asop.ASGradientDescentOptimizer(base_learning_rate=learning_rate),
+    tf.train.RMSPropOptimizer(learning_rate=learning_rate),
+    asop.ASRMSPropOptimizer(base_learning_rate=learning_rate),
+    tf.train.AdamOptimizer(learning_rate=learning_rate),
+    tf.train.MomentumOptimizer(learning_rate=learning_rate, momentum=.9),
+    tf.train.MomentumOptimizer(learning_rate=learning_rate, momentum=.9, use_nesterov=True),
+    tf.train.AdagradOptimizer(learning_rate=learning_rate)
 ]
 opt_names = ['SGD',
-             # 'SGD+AS', 'RMSProp', 'RMSProp+AS', 'ADAM', 'SGD+M', 'SGD+NM', 'Adagrad'
+             'SGD+AS', 'RMSProp', 'RMSProp+AS', 'ADAM', 'SGD+M', 'SGD+NM', 'Adagrad'
              ]
-epochs = 10
+epochs = 200
 minibatch_size = 200
 losses=[]
 

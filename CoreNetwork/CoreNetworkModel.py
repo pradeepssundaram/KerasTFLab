@@ -20,23 +20,30 @@ class CoreNetwork(object):
         _input_dim = self.modelparameters.inputfeaturecount
         _classes = self.modelparameters.outputclasses
         model = Sequential()
-        if len(_activations) == 1:
-            _layer = Dense(_classes,input_dim=_input_dim,activation=_activations[0])
+
+        # specific case of logistic regression
+        #that
+        if len(_activations) == 0 :
+
+            if _classes == 2:
+                _layer = Dense(_classes, input_dim=_input_dim, activation='sigmoid')
+            else:
+                _layer = Dense(_classes, input_dim=_input_dim, activation='softmax')
             model.add(_layer)
             return model
-        for i in range(len(_activations)) :
+
+        for i in range(len(_activations)):
             if i == 0:
                 _layer = Dense(units=_units[i],input_dim=_input_dim,activation=_activations[i])
-                model.add(layer=_layer)
-            elif i == len(_activations) - 1:
-                if _classes != 2:
-                    _layer = Dense(units=_classes,activation="softmax")
-                else:
-                    _layer = Dense(units=_classes, activation="sigmoid")
                 model.add(layer=_layer)
             else:
                 _layer = Dense(units=_units[i],activation=_activations[i])
                 model.add(layer=_layer)
+        if _classes == 2:
+            _layer = Dense(_classes, input_dim=_input_dim, activation='sigmoid')
+        else:
+            _layer = Dense(_classes, input_dim=_input_dim, activation='softmax')
+        model.add(_layer)
         return model
 
     def _transform(self,X_):
